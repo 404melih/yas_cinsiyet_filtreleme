@@ -142,12 +142,13 @@ def process_frame(detection_model, attribute_model, frame, output_txt_path=None,
 
         if not is_duplicate:
             result = {
-                "bbox": bbox,
-                "confidence": conf_score,
-                "age": age,
-                "gender": gender,
-                "time": current_time  # Add timestamp here
-            }
+    "bbox": [float(coord) for coord in bbox],  # np.float32 -> float
+    "confidence": float(conf_score),          # np.float32 -> float
+    "age": int(age),                          # np.int64 -> int
+    "gender": int(gender),                    # np.int64 -> int
+    "time": current_time                      # Zaman zaten float
+}
+
             global_results.append(result)
 
 def run_face_analysis(detection_weights, attribute_weights, input_source, save_output=None, output_txt_path=None):
